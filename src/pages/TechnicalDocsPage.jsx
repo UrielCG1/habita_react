@@ -5,16 +5,6 @@ import {
 } from '../services/technicalDocsService';
 import '../styles/technical-docs.css';
 
-function getCategoryAccent(category) {
-  const accents = {
-    Arquitectura: 'accent-blue',
-    Manual: 'accent-violet',
-    Requerimientos: 'accent-amber',
-  };
-
-  return accents[category] || 'accent-blue';
-}
-
 export default function TechnicalDocsPage() {
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -60,9 +50,8 @@ export default function TechnicalDocsPage() {
             <span className="docs-badge">HABITA · WEB 2</span>
             <h1>Centro de documentación técnica</h1>
             <p>
-              Consulta material técnico del proyecto, visualiza documentos clave
-              y descarga archivos de apoyo para revisión administrativa y
-              académica.
+              Consulta y descarga archivos técnicos relacionados con la
+              plataforma HABITA.
             </p>
           </div>
 
@@ -74,10 +63,6 @@ export default function TechnicalDocsPage() {
             <div className="hero-stat">
               <strong>PDF</strong>
               <span>Formato</span>
-            </div>
-            <div className="hero-stat">
-              <strong>Mock</strong>
-              <span>Demo funcional</span>
             </div>
           </div>
         </section>
@@ -120,10 +105,7 @@ export default function TechnicalDocsPage() {
         {!loading && !error && filteredDocuments.length > 0 && (
           <section className="docs-grid">
             {filteredDocuments.map((doc) => (
-              <article
-                className={`doc-card ${getCategoryAccent(doc.category)}`}
-                key={doc.id}
-              >
+              <article className="doc-card" key={doc.id}>
                 <div className="doc-card__header">
                   <div className="doc-icon">PDF</div>
 
@@ -150,17 +132,8 @@ export default function TechnicalDocsPage() {
                 <div className="doc-card__actions">
                   <a
                     href={getTechnicalDocumentDownloadUrl(doc)}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="btn btn-primary"
-                  >
-                    Ver documento
-                  </a>
-
-                  <a
-                    href={getTechnicalDocumentDownloadUrl(doc)}
                     download={doc.fileName}
-                    className="btn btn-secondary"
+                    className="btn btn-primary"
                   >
                     Descargar PDF
                   </a>
