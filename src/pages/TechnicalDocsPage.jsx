@@ -5,6 +5,16 @@ import {
 } from '../services/technicalDocsService';
 import '../styles/technical-docs.css';
 
+function getCategoryAccent(category) {
+  const accents = {
+    Arquitectura: 'accent-blue',
+    Manual: 'accent-violet',
+    Requerimientos: 'accent-amber',
+  };
+
+  return accents[category] || 'accent-blue';
+}
+
 export default function TechnicalDocsPage() {
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -40,86 +50,126 @@ export default function TechnicalDocsPage() {
     });
   }, [documents, search]);
 
+  const totalDocs = documents.length;
+
   return (
     <main className="docs-page">
-      <section className="docs-hero">
-        <div className="docs-hero__content">
-          <span className="docs-badge">HABITA · WEB 2</span>
-          <h1>Documentación técnica</h1>
-          <p>
-            Consulta y descarga archivos técnicos de apoyo relacionados con la
-            plataforma HABITA.
-          </p>
-        </div>
-      </section>
+      <div className="docs-shell">
+        <section className="docs-hero">
+          <div className="docs-hero__text">
+            <span className="docs-badge">HABITA · WEB 2</span>
+            <h1>Centro de documentación técnica</h1>
+            <p>
+              Consulta material técnico del proyecto, visualiza documentos clave
+              y descarga archivos de apoyo para revisión administrativa y
+              académica.
+            </p>
+          </div>
 
-      <section className="docs-toolbar">
-        <input
-          type="text"
-          placeholder="Buscar documento..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="docs-search"
-        />
-      </section>
-
-      {loading && (
-        <section className="docs-state">
-          <p>Cargando documentación...</p>
+          <div className="docs-hero__panel">
+            <div className="hero-stat">
+              <strong>{totalDocs}</strong>
+              <span>Documentos</span>
+            </div>
+            <div className="hero-stat">
+              <strong>PDF</strong>
+              <span>Formato</span>
+            </div>
+            <div className="hero-stat">
+              <strong>Mock</strong>
+              <span>Demo funcional</span>
+            </div>
+          </div>
         </section>
-      )}
 
-      {!loading && error && (
-        <section className="docs-state docs-state--error">
-          <p>{error}</p>
+        <section className="docs-toolbar">
+          <div className="docs-toolbar__title">
+            <h2>Repositorio técnico</h2>
+            <p>Explora la documentación disponible del sistema HABITA.</p>
+          </div>
+
+          <div className="docs-search-wrap">
+            <input
+              type="text"
+              placeholder="Buscar por título, categoría o descripción..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="docs-search"
+            />
+          </div>
         </section>
-      )}
 
-      {!loading && !error && filteredDocuments.length === 0 && (
-        <section className="docs-state">
-          <p>No se encontraron documentos.</p>
-        </section>
-      )}
+        {loading && (
+          <section className="docs-state">
+            <p>Cargando documentación...</p>
+          </section>
+        )}
 
-      {!loading && !error && filteredDocuments.length > 0 && (
-        <section className="docs-grid">
-          {filteredDocuments.map((doc) => (
-            <article className="doc-card" key={doc.id}>
-              <div className="doc-card__top">
-                <span className="doc-card__category">{doc.category}</span>
-                <span className="doc-card__size">{doc.size}</span>
-              </div>
+        {!loading && error && (
+          <section className="docs-state docs-state--error">
+            <p>{error}</p>
+          </section>
+        )}
 
-              <h2>{doc.title}</h2>
-              <p>{doc.description}</p>
+        {!loading && !error && filteredDocuments.length === 0 && (
+          <section className="docs-state">
+            <p>No se encontraron documentos.</p>
+          </section>
+        )}
 
-              <div className="doc-card__meta">
-                <span>Archivo: {doc.fileName}</span>
-                <span>Fecha: {doc.uploadedAt}</span>
-              </div>
+        {!loading && !error && filteredDocuments.length > 0 && (
+          <section className="docs-grid">
+            {filteredDocuments.map((doc) => (
+              <article
+                className={`doc-card ${getCategoryAccent(doc.category)}`}
+                key={doc.id}
+              >
+                <div className="doc-card__header">
+                  <div className="doc-icon">PDF</div>
 
-              <div className="doc-card__actions">
-                <a
-                  href={getTechnicalDocumentDownloadUrl(doc)}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="btn btn-primary"
-                >
-                  Ver PDF
-                </a>
+                  <div className="doc-card__header-text">
+                    <span className="doc-card__category">{doc.category}</span>
+                    <span className="doc-card__size">{doc.size}</span>
+                  </div>
+                </div>
 
-                <a
-                  href={getTechnicalDocumentDownloadUrl(doc)}
-                  download={doc.fileName}
-                  className="btn btn-secondary"
-                >
-                  Descargar
-                </a>
-              </div>
-            </article>
-          ))}
-        </section>
-      )}
+                <h3>{doc.title}</h3>
+                <p className="doc-card__description">{doc.description}</p>
+
+                <div className="doc-card__meta">
+                  <div>
+                    <small>Archivo</small>
+                    <strong>{doc.fileName}</strong>
+                  </div>
+                  <div>
+                    <small>Fecha</small>
+                    <strong>{doc.uploadedAt}</strong>
+                  </div>
+                </div>
+
+                <div className="doc-card__actions">
+                  <a
+                    href={getTechnicalDocumentDownloadUrl(doc)}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="btn btn-primary"
+                  >
+                    Ver documento
+                  </a>
+
+                  <a
+                    href={getTechnicalDocumentDownloadUrl(doc)}
+                    download={doc.fileName}
+                    className="btn btn-secondary"
+                  >
+                    Descargar PDF
+                  </a>
+                </div>
+              </article>
+            ))}
+          </section>
+        )}
+      </div>
     </main>
   );
 }
