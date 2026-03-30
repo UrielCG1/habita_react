@@ -5,7 +5,7 @@ export const mockTechnicalDocs = [
     description:
       'Documento general con la arquitectura del sistema, componentes principales y flujo entre frontend, backend y base de datos.',
     fileName: 'arquitectura-habita.pdf',
-    downloadUrl: '/docs/arquitectura-habita.pdf',
+    downloadUrl: '/public/arquitectura-habita.pdf',
     category: 'Arquitectura',
     uploadedAt: '2026-03-29',
     size: '1.2 MB',
@@ -16,7 +16,7 @@ export const mockTechnicalDocs = [
     description:
       'Guía de apoyo para las funciones administrativas del sistema y navegación del panel principal.',
     fileName: 'manual-admin.pdf',
-    downloadUrl: '/docs/manual-admin.pdf',
+    downloadUrl: '/public/manual-admin.pdf',
     category: 'Manual',
     uploadedAt: '2026-03-28',
     size: '860 KB',
@@ -27,7 +27,7 @@ export const mockTechnicalDocs = [
     description:
       'Resumen de requerimientos funcionales y técnicos considerados en el desarrollo de HABITA.',
     fileName: 'requerimientos.pdf',
-    downloadUrl: '/docs/requerimientos.pdf',
+    downloadUrl: '/public/requerimientos.pdf',
     category: 'Requerimientos',
     uploadedAt: '2026-03-27',
     size: '940 KB',
